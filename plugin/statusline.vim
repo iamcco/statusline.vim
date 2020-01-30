@@ -131,8 +131,13 @@ if !exists('g:statusline["_"]')
     \      ], ''),
     \   'deactive': '%F'
     \ }
-  " disable coc-list statusline
+  " do not change coc-list statusline
   let g:statusline['list'] = {}
+  " hide statusline for coc-explorer window
+  let g:statusline['coc-explorer'] = {
+    \   'active': '%#StlNormal#',
+    \   'deactive': '%#StlNormal#'
+    \ }
 endif
 
 augroup StatuslineAug

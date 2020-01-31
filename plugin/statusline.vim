@@ -52,9 +52,18 @@ highlight link StlModeTERMINAL StlModeNORMAL
 highlight link StlModeSELECT   StlModeVISUAL
 highlight link StlMode         StlModeNORMAL
 
+" pad string with space
+function! Statusline_pad(item) abort
+  let l:info = trim(a:item)
+  if l:info !=# ''
+    let l:info = ' ' . l:info . ' '
+  endif
+  return l:info
+endfunction
+
 " vim mode
-function! Statusline_mode() abort
-  let l:mode = s:modes[mode()]
+function! Statusline_mode(...) abort
+  let l:mode = get(a:, '1', s:modes[mode()])
   execute 'highlight! link StlMode StlMode' . l:mode
   return l:mode
 endfunction
@@ -82,15 +91,6 @@ function! Statusline_diagnostics(type) abort
     let l:info = ' ' . l:info
   elseif a:type ==# 'warning' && l:info !=# '' && trim(get(g:, 'coc_status', ''), '') !=# ''
     let l:info = ' ' . l:info
-  endif
-  return l:info
-endfunction
-
-" coc status
-function! Statusline_coc_status() abort
-  let l:info = trim(get(g:, 'coc_status', ''))
-  if l:info !=# ''
-    let l:info = ' ' . l:info . ' '
   endif
   return l:info
 endfunction
@@ -125,18 +125,11 @@ if !exists('g:statusline["_"]')
     \         '%#StlSection#%{Statusline_git()==#\"\"&&(&modified\|\|!&modifiable)?\"\ \":\"\"}%m%{&modified\|\|!&modifiable?\"\ \":\"\"}%*',
     \         '%#StlNormal#%<\ %f',
     \         '%=%*',
-    \         '%#StlSection#%{Statusline_coc_status()}%*',
+    \         '%#StlSection#%{Statusline_pad(get(g:,\"coc_status\",\"\"))}%*',
     \         '%#StlError#%{Statusline_diagnostics(\"error\")}%*',
     \         '%#StlWarning#%{Statusline_diagnostics(\"warning\")}%*',
     \      ], ''),
     \   'deactive': '%F'
-    \ }
-  " do not change coc-list statusline
-  let g:statusline['list'] = {}
-  " hide statusline for coc-explorer window
-  let g:statusline['coc-explorer'] = {
-    \   'active': '%#StlNormal#',
-    \   'deactive': '%#StlNormal#'
     \ }
 endif
 

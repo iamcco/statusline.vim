@@ -59,6 +59,8 @@ Autocmd event to setup active line
 - VimEnter
 - WinEnter
 - BufDelete
+- BufNew
+- BufNewFile
 - FileType
 
 For deactive line

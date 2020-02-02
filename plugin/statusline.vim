@@ -37,20 +37,22 @@ let s:modes = {
     \   't':        'TERMINAL'
     \ }
 
-highlight StlModeNORMAL  guibg=#98c379 guifg=#282c34 ctermbg=114 ctermfg=235
-highlight StlModeINSERT  guibg=#61afef guifg=#282c34 ctermbg=39  ctermfg=235
-highlight StlModeVISUAL  guibg=#c678dd guifg=#282c34 ctermbg=170 ctermfg=235
-highlight StlModeREPLACE guibg=#e06c75 guifg=#282c34 ctermbg=204 ctermfg=235
-highlight StlSection     guibg=#3e4452 guifg=#abb2bf ctermbg=237 ctermfg=145
-highlight StlNormal      guibg=#282c34 guifg=#67727f ctermbg=235 ctermfg=241
-highlight StlWarning     guibg=#e5c07b guifg=#484848 ctermbg=180 ctermfg=239
-highlight StlError       guibg=#e06c75 guifg=#282828 ctermbg=204 ctermfg=235
+highlight StlModeNORMAL       guibg=#98c379 guifg=#282c34 ctermbg=114 ctermfg=235
+highlight StlModeINSERT       guibg=#61afef guifg=#282c34 ctermbg=39  ctermfg=235
+highlight StlModeVISUAL       guibg=#c678dd guifg=#282c34 ctermbg=170 ctermfg=235
+highlight StlModeREPLACE      guibg=#e06c75 guifg=#282c34 ctermbg=204 ctermfg=235
+highlight StlSection          guibg=#3e4452 guifg=#abb2bf ctermbg=237 ctermfg=145
+highlight StlNormalUnmodified guibg=#282c34 guifg=#67727f ctermbg=235 ctermfg=241
+highlight StlNormalModified   guibg=#3e3452 guifg=#78828f ctermbg=235 ctermfg=241
+highlight StlWarning          guibg=#e5c07b guifg=#484848 ctermbg=180 ctermfg=239
+highlight StlError            guibg=#e06c75 guifg=#282828 ctermbg=204 ctermfg=235
 highlight link StlModeCOMMAND  StlModeNORMAL
 highlight link StlModePROMPT   StlModeNORMAL
 highlight link StlModeSHELL    StlModeNORMAL
 highlight link StlModeTERMINAL StlModeNORMAL
 highlight link StlModeSELECT   StlModeVISUAL
 highlight link StlMode         StlModeNORMAL
+highlight link StlNormal       StlNormalUnmodified
 
 " pad string with space
 function! Statusline_pad(item) abort
@@ -73,6 +75,16 @@ function! Statusline_git() abort
   let l:info = trim(get(g:, 'coc_git_status', '') . ' ' . trim(get(b:, 'coc_git_status', '')))
   if l:info !=# ''
     let l:info = substitute(' ' . trim(l:info) . ' ', '●', '•', 'g')
+  endif
+  return l:info
+endfunction
+
+function! Statusline_file() abort
+  let l:info = substitute(fnamemodify(expand('%:p'), ':p'), '\v^.*\/([^ \/]+\/[^ \/]+)$' , '\1', 'i')
+  if &modified
+    highlight link StlNormal StlNormalModified
+  else
+    highlight link StlNormal StlNormalUnmodified
   endif
   return l:info
 endfunction
@@ -122,8 +134,7 @@ if !exists('g:statusline["_"]')
     \   'active': join([
     \         '%#StlMode#\ %{Statusline_mode()}\ %*',
     \         '%#StlSection#%{Statusline_git()}%*',
-    \         '%#StlSection#%{Statusline_git()==#\"\"&&(&modified\|\|!&modifiable)?\"\ \":\"\"}%m%{&modified\|\|!&modifiable?\"\ \":\"\"}%*',
-    \         '%#StlNormal#%<\ %f',
+    \         '%#StlNormal#%<\ %{Statusline_file()}\ ',
     \         '%=%*',
     \         '%#StlSection#%{Statusline_pad(get(g:,\"coc_status\",\"\"))}%*',
     \         '%#StlError#%{Statusline_diagnostics(\"error\")}%*',
@@ -135,6 +146,6 @@ endif
 
 augroup StatuslineAug
   autocmd!
-  autocmd VimEnter,WinEnter,BufDelete,BufNew,BufNewFile,FileType * call Statusline_update('active')
+  autocmd VimEnter,WinEnter,BufDelete,BufNew,BufNewFile,FileType,TabNewEntered * call Statusline_update('active')
   autocmd WinLeave * call Statusline_update('deactive')
 augroup END

@@ -62,6 +62,8 @@ Autocmd event to setup active line
 - BufNew
 - BufNewFile
 - FileType
+- TabNewEntered
+- CursorHold
 
 For deactive line
 

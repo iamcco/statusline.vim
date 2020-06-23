@@ -146,6 +146,6 @@ endif
 
 augroup StatuslineAug
   autocmd!
-  autocmd VimEnter,WinEnter,BufDelete,BufNew,BufNewFile,FileType,TabNewEntered * call Statusline_update('active')
+  autocmd VimEnter,WinEnter,BufDelete,BufNew,BufNewFile,FileType,TabNewEntered,CursorHold * call Statusline_update('active')
   autocmd WinLeave * call Statusline_update('deactive')
 augroup END

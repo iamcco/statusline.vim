@@ -40,22 +40,25 @@ let s:modes = {
     \   't':        'TERMINAL'
     \ }
 
-highlight StlModeNORMAL       guibg=#98c379 guifg=#282c34 ctermbg=114 ctermfg=235
-highlight StlModeINSERT       guibg=#61afef guifg=#282c34 ctermbg=39  ctermfg=235
-highlight StlModeVISUAL       guibg=#c678dd guifg=#282c34 ctermbg=170 ctermfg=235
-highlight StlModeREPLACE      guibg=#e06c75 guifg=#282c34 ctermbg=204 ctermfg=235
-highlight StlSection          guibg=#3e4452 guifg=#abb2bf ctermbg=237 ctermfg=145
-highlight StlNormalUnmodified guibg=#282c34 guifg=#67727f ctermbg=235 ctermfg=241
-highlight StlNormalModified   guibg=#3e3452 guifg=#78828f ctermbg=235 ctermfg=241
-highlight StlWarning          guibg=#e5c07b guifg=#484848 ctermbg=180 ctermfg=239
-highlight StlError            guibg=#e06c75 guifg=#282828 ctermbg=204 ctermfg=235
-highlight link StlModeCOMMAND  StlModeNORMAL
-highlight link StlModePROMPT   StlModeNORMAL
-highlight link StlModeSHELL    StlModeNORMAL
-highlight link StlModeTERMINAL StlModeNORMAL
-highlight link StlModeSELECT   StlModeVISUAL
-highlight link StlMode         StlModeNORMAL
-highlight link StlNormal       StlNormalUnmodified
+
+function! s:init_highlight() abort
+  " highlight StlModeNORMAL       guibg=#98c379 guifg=#282c34 ctermbg=114 ctermfg=235
+  " highlight StlModeINSERT       guibg=#61afef guifg=#282c34 ctermbg=39  ctermfg=235
+  " highlight StlModeVISUAL       guibg=#c678dd guifg=#282c34 ctermbg=170 ctermfg=235
+  " highlight StlModeREPLACE      guibg=#e06c75 guifg=#282c34 ctermbg=204 ctermfg=235
+  " highlight StlSection          guibg=#3e4452 guifg=#abb2bf ctermbg=237 ctermfg=145
+  " highlight StlNormalUnmodified guibg=#282c34 guifg=#67727f ctermbg=235 ctermfg=241
+  " highlight StlNormalModified   guibg=#3e3452 guifg=#78828f ctermbg=235 ctermfg=241
+  highlight StlWarning          guibg=#e5c07b guifg=#484848 ctermbg=180 ctermfg=239
+  highlight StlError            guibg=#e06c75 guifg=#282828 ctermbg=204 ctermfg=235
+  highlight link StlModeCOMMAND  StlModeNORMAL
+  highlight link StlModePROMPT   StlModeNORMAL
+  highlight link StlModeSHELL    StlModeNORMAL
+  highlight link StlModeTERMINAL StlModeNORMAL
+  highlight link StlModeSELECT   StlModeVISUAL
+  highlight link StlMode         StlModeNORMAL
+  highlight link StlNormal       StlNormalUnmodified
+endfunction
 
 " pad string with space
 function! Statusline_pad(item) abort
@@ -151,4 +154,7 @@ augroup StatuslineAug
   autocmd!
   autocmd VimEnter,WinEnter,BufDelete,BufNew,BufNewFile,FileType,TabNewEntered,CursorHold * call Statusline_update('active')
   autocmd WinLeave * call Statusline_update('deactive')
+  autocmd ColorScheme * call <SID>init_highlight()
 augroup END
+
+call s:init_highlight()

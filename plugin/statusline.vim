@@ -52,12 +52,12 @@ function! s:init_highlight() abort
   " highlight StlWarning          guibg=#e5c07b guifg=#484848 ctermbg=180 ctermfg=239
   " highlight StlError            guibg=#e06c75 guifg=#282828 ctermbg=204 ctermfg=235
   highlight link       StlModeNORMAL       Normal
-  highlight link       StlModeINSERT       Normal
-  highlight link       StlModeVISUAL       Normal
+  highlight            StlModeINSERT       guibg=#61afef guifg=#282c34 ctermbg=39  ctermfg=235
+  highlight            StlModeVISUAL       guibg=#c678dd guifg=#282c34 ctermbg=170 ctermfg=235
   highlight link       StlModeREPLACE      Normal
   highlight link       StlSection          Normal
   highlight link       StlNormalUnmodified Normal
-  highlight link       StlNormalModified   Normal
+  highlight            StlNormalModified   guibg=#3e3452 guifg=#78828f ctermbg=235 ctermfg=241
   highlight StlWarning guibg=#e5c07b       guifg=#484848 ctermbg=180 ctermfg=239
   highlight StlError   guibg=#e06c75       guifg=#282828 ctermbg=204 ctermfg=235
 

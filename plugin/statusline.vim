@@ -40,6 +40,18 @@ let s:modes = {
     \   't':        'TERMINAL'
     \ }
 
+ " mode display symbol
+let s:modes_short = {
+    \   'NORMAL':   '🅽 ',
+    \   'INSERT':   '🅸 ',
+    \   'SELECT':   '🆂 ',
+    \   'VISUAL':   '🆅 ',
+    \   'REPLACE':  '🆁 ',
+    \   'COMMAND':  '🅲 ',
+    \   'PROMPT':   '🅿 ',
+    \   'TERMINAL': '🆃 ',
+    \ }
+
 
 function! s:init_highlight() abort
   " highlight StlModeNORMAL       guibg=#98c379 guifg=#282c34 ctermbg=114 ctermfg=235
@@ -90,7 +102,7 @@ endfunction
 function! Statusline_mode(...) abort
   let l:mode = get(a:, '1', s:modes[mode()])
   execute 'highlight! link StlMode StlMode' . l:mode
-  return l:mode
+  return s:modes_short[l:mode]
 endfunction
 
 " git info from coc-git

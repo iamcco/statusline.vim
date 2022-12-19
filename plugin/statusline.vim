@@ -74,6 +74,9 @@ endfunction
 function! Statusline_pad(item) abort
   let l:info = trim(a:item)
   if l:info !=# ''
+    for [l:pat, l:sub] in get(g:, 'statusline_flag', [])
+      let l:info = substitute(l:info, l:pat, l:sub, 'g')
+    endfor
     if l:info =~# '\v[^\x00-\xff]\s*$'
       let l:info = ' ' . l:info . '  '
     else

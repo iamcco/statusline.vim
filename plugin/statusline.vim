@@ -74,7 +74,11 @@ endfunction
 function! Statusline_pad(item) abort
   let l:info = trim(a:item)
   if l:info !=# ''
-    let l:info = ' ' . l:info . ' '
+    if l:info =~# '\v[^\x00-\xff]\s*$'
+      let l:info = ' ' . l:info . '  '
+    else
+      let l:info = ' ' . l:info . ' '
+    endif
   endif
   return l:info
 endfunction

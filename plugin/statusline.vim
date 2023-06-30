@@ -4,8 +4,6 @@ if exists('g:statusline_running')
 endif
 let g:statusline_running = 1
 
-let s:background = &background
-
 " mode flag to string mapping
 let s:modes = {
     \   'n':        'NORMAL',
@@ -54,10 +52,6 @@ let s:modes_short = {
     \   'TERMINAL': '🆃 ',
     \ }
 
-function! s:init_before() abort
-  let s:background = &background
-endfunction
-
 function! s:init_highlight() abort
   " highlight StlModeNORMAL       guibg=#98c379 guifg=#282c34 ctermbg=114 ctermfg=235
   " highlight StlModeINSERT       guibg=#61afef guifg=#282c34 ctermbg=39  ctermfg=235
@@ -73,12 +67,12 @@ function! s:init_highlight() abort
   highlight link       StlSection          Normal
   highlight link       StlNormalUnmodified Normal
 
-  if s:background == 'light'
+  if &background == 'light'
     highlight            StlModeINSERT       guibg=#61afef guifg=#d7d3cb ctermbg=39  ctermfg=235
     highlight            StlModeVISUAL       guibg=#398722 guifg=#d7d3cb ctermbg=170 ctermfg=235
     highlight            StlNormalModified   guibg=#c1cbad guifg=#877d70 ctermbg=235 ctermfg=241
-    highlight StlWarning guibg=#e5c07b       guifg=#b7b7b7 ctermbg=180 ctermfg=239
-    highlight StlError   guibg=#e06c75       guifg=#d7d7d7 ctermbg=204 ctermfg=235
+    highlight StlWarning guibg=#e5c07b       guifg=#ffffff ctermbg=180 ctermfg=239
+    highlight StlError   guibg=#e06c75       guifg=#ffffff ctermbg=204 ctermfg=235
   else
     highlight            StlModeINSERT       guibg=#61afef guifg=#282c34 ctermbg=39  ctermfg=235
     highlight            StlModeVISUAL       guibg=#c678dd guifg=#282c34 ctermbg=170 ctermfg=235
@@ -198,7 +192,6 @@ augroup StatuslineAug
   autocmd!
   autocmd VimEnter,WinEnter,BufDelete,BufNew,BufNewFile,FileType,TabNewEntered,CursorHold * call Statusline_update('active')
   autocmd WinLeave * call Statusline_update('deactive')
-  autocmd ColorSchemePre * call <SID>init_before()
   autocmd ColorScheme * call <SID>init_highlight()
 augroup END
 
